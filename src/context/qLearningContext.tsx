@@ -65,34 +65,7 @@ interface Props {
   children: React.ReactNode
 }
 
-const INIT_Q_TABLE: TQTable = INIT_ENVIRONMENT_STATE.map((row) =>
-  row.map(() => ({
-    [Action.UP]: 0,
-    [Action.RIGHT]: 0,
-    [Action.DOWN]: 0,
-    [Action.LEFT]: 0,
-  })),
-)
-
-delete INIT_Q_TABLE[0][0][Action.UP]
-delete INIT_Q_TABLE[0][0][Action.LEFT]
-delete INIT_Q_TABLE[0][1][Action.UP]
-delete INIT_Q_TABLE[0][2][Action.UP]
-delete INIT_Q_TABLE[0][3][Action.UP]
-delete INIT_Q_TABLE[0][3][Action.RIGHT]
-
-delete INIT_Q_TABLE[1][0][Action.LEFT]
-delete INIT_Q_TABLE[1][3][Action.RIGHT]
-
-delete INIT_Q_TABLE[2][0][Action.LEFT]
-delete INIT_Q_TABLE[2][3][Action.RIGHT]
-
-delete INIT_Q_TABLE[3][0][Action.LEFT]
-delete INIT_Q_TABLE[3][0][Action.DOWN]
-delete INIT_Q_TABLE[3][1][Action.DOWN]
-delete INIT_Q_TABLE[3][2][Action.DOWN]
-delete INIT_Q_TABLE[3][3][Action.DOWN]
-delete INIT_Q_TABLE[3][3][Action.RIGHT]
+const INIT_Q_TABLE: TQTable = [] // TODO(comp1): Initialize Q table
 
 const QLearningProvider = ({ children }: Props) => {
   const [learningRate, setLearningRate] = useState<number>(LEARNING_RATE)
@@ -187,18 +160,14 @@ const QLearningProvider = ({ children }: Props) => {
       throw new Error('[QLearningService] Invalid action taken')
     }
 
-    const maxFutureReward = _getBestActionForPosition(newPosition)
+    const maxFutureReward = _getBestActionForPosition(newPosition).rewardForBestAction
     const immediateReward = state[newPosition.rowIndex][newPosition.columnIndex]
 
     if (immediateReward == null) {
       throw new Error('[QLearningService] Invalid immediate reward')
     }
 
-    const term1 = (1 - learningRate) * oldQValue
-    const term2 = learningRate * immediateReward
-    const term3 = learningRate * discountFactor * maxFutureReward.rewardForBestAction
-
-    return term1 + term2 + term3
+    return 0 // TODO(comp1): Calculate new Q value
   }
 
   const triggerNextEpisode = () => {
