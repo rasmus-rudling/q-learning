@@ -194,18 +194,8 @@ const QLearningProvider = ({ children }: Props) => {
     rewardForBestAction: number
   } => {
     const possibleActions = getPossibleActions(position)
-
-    const rewardForBestAction = Math.max(...Object.values(possibleActions))
-
-    let bestAction = Action.UP
-
-    if (possibleActions[Action.RIGHT] === rewardForBestAction) {
-      bestAction = Action.RIGHT
-    } else if (possibleActions[Action.DOWN] === rewardForBestAction) {
-      bestAction = Action.DOWN
-    } else if (possibleActions[Action.LEFT] === rewardForBestAction) {
-      bestAction = Action.LEFT
-    }
+    let rewardForBestAction = 0
+    let bestAction = Action.UP // TODO(comp1): Find the best action
 
     return {
       bestAction,
